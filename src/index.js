@@ -4,10 +4,10 @@ import fastify from "fastify";
 const app = fastify({ logger: true });
 
 app.route({
-  method: `GET`,
+  method: `POST`,
   url: `/`,
   schema: {
-    querystring: {
+    body: {
       email: { type: `string` }
     },
     response: {
@@ -21,7 +21,7 @@ app.route({
   },
   handler: async (request, reply) => {
     try {
-      await appendFile(`data.txt`, `${request.query.name} <${request.query.email}>` + "\n");
+      await appendFile(`data.txt`, request.body.email + "\n");
       return { success: true };
     } catch(err) {
       app.log.error(err);
